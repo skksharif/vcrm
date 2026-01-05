@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 const { connectDB } = require('./config/db');
 const { errorHandler } = require('./middlewares/errorHandler');
 
@@ -38,6 +39,19 @@ app.use('/api/smm', smmRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+// Keep-alive cron job for Render free tier (prevent sleep)
+// Runs every 10 minutes to ping the server
+cron.schedule('*/13 * * * *', () => {
+  const http = require('http');
+  const apiUrl = "https://vcrm.onrender.com";
+  
+  http.get(`${apiUrl}/`, (res) => {
+    console.log(`[${new Date().toISOString()}] Keep-alive ping successful - Status: ${res.statusCode}`);
+  }).on('error', (err) => {
+    console.error(`[${new Date().toISOString()}] Keep-alive ping failed:`, err.message);
+  });
 });
