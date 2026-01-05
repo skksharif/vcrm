@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+  --primary-soft: rgba(2,108,138,0.15);
+  --secondary-soft: rgba(163,208,66,0.15);
+}
+
+/* small helpers */
+.gradient-card{
+  background: linear-gradient(180deg, var(--primary-soft), transparent);
+}
