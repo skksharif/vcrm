@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
 
   try {
     const jwt = require('jsonwebtoken');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'xxxyxxxxxyyyxxxyyyxxxyyy');
     req.user = decoded;
     next();
   } catch (error) {
